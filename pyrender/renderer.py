@@ -15,6 +15,7 @@ from .material import MetallicRoughnessMaterial, SpecularGlossinessMaterial
 from .light import PointLight, SpotLight, DirectionalLight
 from .font import FontCache
 from .utils import format_color_vector
+from .camera import PerspectiveCamera, OrthographicCamera
 
 from OpenGL.GL import *
 
@@ -1161,7 +1162,7 @@ class Renderer(object):
                 depth_im[noninf] = 2 * self.znear / (1.0 - depth_im[noninf])
             else:
                 depth_im[noninf] = (depth_im[noninf] * (z_far - z_near) + (z_near + z_far)) / 2.0
-        elif:
+        else:
             if z_far is None:
                 depth_im[noninf] = 2 * z_near / (1.0 - depth_im[noninf])
             else:
