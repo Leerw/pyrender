@@ -1155,12 +1155,20 @@ class Renderer(object):
         z_near = scene.main_camera_node.camera.znear
         z_far = scene.main_camera_node.camera.zfar
         noninf = np.logical_not(inf_inds)
-        if z_far is None:
-            depth_im[noninf] = 2 * z_near / (1.0 - depth_im[noninf])
-        else:
-            depth_im[noninf] = ((2.0 * z_near * z_far) /
-                                (z_far + z_near - depth_im[noninf] *
-                                (z_far - z_near)))
+        
+        if isinstance(scene.main_camera_node.camera, OrthographicCamera):
+            if z_far is None:
+                depth_im[noninf] = 2 * self.znear / (1.0 - depth_im[noninf])
+            else:
+                depth_im[noninf] = (depth_im[noninf] * (z_far - z_near) + (z_near + z_far)) / 2.0
+        elif:
+            if z_far is None:
+                depth_im[noninf] = 2 * z_near / (1.0 - depth_im[noninf])
+            else:
+                depth_im[noninf] = ((2.0 * z_near * z_far) /
+                                    (z_far + z_near - depth_im[noninf] *
+                                    (z_far - z_near)))
+        
         depth_im[inf_inds] = 0.0
 
         # Resize for macos if needed
